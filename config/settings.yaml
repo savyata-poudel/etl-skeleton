@@ -1,0 +1,19 @@
+run:
+  batch_size: 500
+  max_retries: 5
+  backoff_seconds: 2
+  target_table: public.customers_stg
+sources:
+  file:
+    path: "/data/input/customers.csv"
+    fmt: "csv"
+  api:
+    endpoint: "/launches"
+    page_param: "page"
+    per_page_param: "limit"
+    per_page: 100
+  db:
+    query: "SELECT * from public.customers where updated_at >= :since LIMIT :limit OFFSET :offset"
+load:
+  mode: "upsert"
+  key_column: ["customer_id"]

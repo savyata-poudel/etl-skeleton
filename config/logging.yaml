@@ -1,0 +1,12 @@
+version: 1
+formatters:
+  json:
+    format: '{"t":"%(asctime)s","l":"%(levelname)s","m":"%(message)s","n":"%(name)s"}'
+handlers:
+  console:
+    class: Logging.StreamHandler
+    formatter: json
+    level: INFO
+root:
+  handlers: [console]
+  level: INFO
