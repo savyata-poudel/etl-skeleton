@@ -1,11 +1,23 @@
 from __future__ import annotations
-import pandas as pd
+import logging
 from pathlib import Path
+from typing import Iterator
+import pandas as pd
 
-def read_file(path: str, fmt: str = "csv") -> pd.DataFrame:
-    p=Path(path)
+log = logging.getLogger(__name__)
+
+def read_file(cfg: dict) -> Iterator[dict]:
+    path = Path(cfg["path"])
+    fmt = cfg.get("fmt", "csv")
+    if not path.exists():
+        raise FileNotFoundError(f"Input file not found: {path}\nRun: python scripts/generate_csv.py")
+    log.info("Reading %s file: %s", fmt, path)
     if fmt == "csv":
-        return pd.read_csv(p)
-    if fmt == "parquet":
-        return pd.read_parquet(p)
-    raise ValueError(f"Unsupported format: {fmt}")
+        df = pd.read_csv(path, dtype=str)
+    elif fmt == "parquet":
+        df = pd.read_parquet(path)
+    else:
+        raise ValueError(f"Unsupported format: {fmt}")
+    log.info("File rows read: %d", len(df))
+    for row in df.to_dict(orient="records"):
+        yield row

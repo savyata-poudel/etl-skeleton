@@ -1,19 +1,22 @@
 run:
   batch_size: 500
-  max_retries: 5
+  max_retries: 3
   backoff_seconds: 2
-  target_table: public.customers_stg
+  target_table: public.users_stg
+
 sources:
   file:
-    path: "/data/input/customers.csv"
+    path: "data/input/users.csv"
     fmt: "csv"
   api:
-    endpoint: "/launches"
+    endpoint: "/users"
     page_param: "page"
-    per_page_param: "limit"
-    per_page: 100
+    per_page_param: "per_page"
+    per_page: 6
+    data_key: "data"
   db:
-    query: "SELECT * from public.customers where updated_at >= :since LIMIT :limit OFFSET :offset"
+    query: "SELECT * FROM source_schema.users WHERE loaded_at >= :since LIMIT :limit OFFSET :offset"
+
 load:
   mode: "upsert"
-  key_column: ["customer_id"]
+  key_column: ["id"]

@@ -1,12 +1,19 @@
 version: 1
+disable_existing_loggers: false
 formatters:
   json:
-    format: '{"t":"%(asctime)s","l":"%(levelname)s","m":"%(message)s","n":"%(name)s"}'
+    (): etl.logging_setup.JsonFormatter
 handlers:
   console:
-    class: Logging.StreamHandler
+    class: logging.StreamHandler
     formatter: json
     level: INFO
+    stream: ext://sys.stdout
+  file:
+    class: logging.FileHandler
+    formatter: json
+    level: INFO
+    filename: logs/etl.log
 root:
-  handlers: [console]
+  handlers: [console, file]
   level: INFO

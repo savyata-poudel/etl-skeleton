@@ -1,7 +1,10 @@
-pandas
+pandas>=2.2
 requests
 sqlalchemy
 psycopg2-binary
 python-dotenv
 pyyaml
 pytest
+faker
+tenacity
+pydantic>=2.0

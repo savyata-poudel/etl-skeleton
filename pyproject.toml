@@ -3,11 +3,18 @@ name = "etl_pipeline"
 version = "0.1.0"
 requires-python = ">=3.10"
 dependencies = [
-    "pandas>=2.2"
-    "requests"
-    "sqlalchemy"
-    "psycopg2-binary"
-    "python-dotenv"
-    "pyyaml"
-    "pytest"
+    "pandas>=2.2",
+    "requests",
+    "sqlalchemy",
+    "psycopg2-binary",
+    "python-dotenv",
+    "pyyaml",
+    "pytest",
+    "faker",
+    "tenacity",
+    "pydantic>=2.0"
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
